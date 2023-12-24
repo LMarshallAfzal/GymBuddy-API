@@ -44,8 +44,24 @@ class ExerciseModelTestCase(TestCase):
         self.exercise.description = None
         self._assert_exercise_is_valid()
 
+    """Tests for exercise type field"""
+    def test_exercise_type_can_be_blank(self):
+        self.exercise.type = ""
+        self._assert_exercise_is_valid()
+
+    def test_exercise_type_must_can_be_null(self):
+        self.exercise.type = None
+        self._assert_exercise_is_valid()
     
+    def test_exercise_type_can_be_25_characters(self):
+        self.exercise.type = "x" * 25
+        self._assert_exercise_is_valid()
+
+    def test_exercise_type_cannot_be_26_characters(self):
+        self.exercise.type = "x" * 26
+        self._assert_exercise_is_invalid()
     
+        
 
     def _assert_exercise_is_invalid(self):
         with self.assertRaises(ValidationError):
