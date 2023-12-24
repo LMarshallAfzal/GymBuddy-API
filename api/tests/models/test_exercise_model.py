@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-# from rest_framework.test import APIClient
 from api.models import Exercise
 
 class ExerciseModelTestCase(TestCase):
