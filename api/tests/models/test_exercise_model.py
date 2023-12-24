@@ -35,6 +35,15 @@ class ExerciseModelTestCase(TestCase):
         self.exercise.name = "x" * 256
         self._assert_exercise_is_invalid()
 
+    """Tests for exercise description field"""
+    def test_exercise_description_can_be_blank(self):
+        self.exercise.description = ""
+        self._assert_exercise_is_valid()
+
+    def test_exercise_description_can_be_null(self):
+        self.exercise.description = None
+        self._assert_exercise_is_valid()
+
     
     
 
