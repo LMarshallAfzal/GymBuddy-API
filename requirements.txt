@@ -7,3 +7,4 @@ typing_extensions==4.9.0
 Faker==21.0.0
 openpyxl==3.1.2
 tqdm==4.66.1
+dj-dotenv
