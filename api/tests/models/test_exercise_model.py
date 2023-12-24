@@ -61,7 +61,24 @@ class ExerciseModelTestCase(TestCase):
         self.exercise.type = "x" * 26
         self._assert_exercise_is_invalid()
     
-        
+    """Tests for exercise muscle group field"""
+    def test_exercise_muscle_group_can_be_blank(self):
+        self.exercise.muscle_group = ""
+        self._assert_exercise_is_valid()
+
+    def test_exercise_muscle_group_can_be_null(self):
+        self.exercise.muscle_group = None
+        self._assert_exercise_is_valid()
+    
+    def test_exercise_muscle_group_can_be_30_characters(self):
+        self.exercise.muscle_group = "x" * 30
+        self._assert_exercise_is_valid()
+
+    def test_exercise_muscle_group_cannot_be_31_characters(self):
+        self.exercise.muscle_group = "x" * 31
+        self._assert_exercise_is_invalid()
+    
+    
 
     def _assert_exercise_is_invalid(self):
         with self.assertRaises(ValidationError):
