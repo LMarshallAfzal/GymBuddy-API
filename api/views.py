@@ -1,21 +1,17 @@
-from django.contrib.auth.models import Group, User
-from rest_framework import permissions, viewsets
+from rest_framework import viewsets
+from api.serializers import ExerciseSerializer, ImageSerializer
+from api.models import Exercise, Image
 
-from api.serializers import GroupSerializer, UserSerializer
-
-class UserViewSet(viewsets.ModelViewSet):
+class ExerciseViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    queryset = Exercise.get_all_exercises()
+    serializer_class = ExerciseSerializer
 
-
-class GroupViewSet(viewsets.ModelViewSet):
+class ImageViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    queryset = Image.get_all_images()
+    serializer_class = ImageSerializer
