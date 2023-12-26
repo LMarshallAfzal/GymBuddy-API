@@ -11,8 +11,17 @@ class ExerciseModelTestCase(TestCase):
             type = 'Strength',
             muscle_group = 'Chest',
             equipment = 'None',
-            level = 'Beginner'
-        ) 
+            level = 'Beginner',
+            image1 = "https://example.com/image.jpg",
+            image2 = "https://example.com/image.jpg",
+            image3 = "https://example.com/image.jpg",
+            image4 = "https://example.com/image.jpg",
+        )
+        self.exercise_2 = Exercise.objects.create(
+            name="Squat", 
+            type="Strength", 
+            muscle_group="Legs"
+        )
 
     def test_valid_exercise(self):
         self._assert_exercise_is_valid()
@@ -110,6 +119,78 @@ class ExerciseModelTestCase(TestCase):
     def test_exercise_level_cannot_be_16_characters(self):
         self.exercise.level = "x" * 16
         self._assert_exercise_is_invalid()
+
+    """Tests for image 1 field"""
+    def test_exercise_image_1_can_be_blank(self):
+        self.exercise.image1 = ""
+        self._assert_exercise_is_valid()
+
+    def test_exercise_image_1_can_be_null(self):
+        self.exercise.image1 = None
+        self._assert_exercise_is_valid()
+    
+    def test_exercise_image_1_can_be_500_characters(self):
+        self.exercise.image1 = "x" * 500
+        self._assert_exercise_is_valid()
+
+    def test_exercise_image_1_cannot_be_501_characters(self):
+        self.exercise.image1 = "x" * 501
+        self._assert_exercise_is_invalid()
+
+    """Tests for image 2 field"""
+    def test_exercise_image_2_can_be_blank(self):
+        self.exercise.image2 = ""
+        self._assert_exercise_is_valid()
+
+    def test_exercise_image_2_can_be_null(self):
+        self.exercise.image2 = None
+        self._assert_exercise_is_valid()
+    
+    def test_exercise_image_2_can_be_500_characters(self):
+        self.exercise.image2 = "x" * 500
+        self._assert_exercise_is_valid()
+
+    def test_exercise_image_2_cannot_be_501_characters(self):
+        self.exercise.image2 = "x" * 501
+        self._assert_exercise_is_invalid()
+
+    """Tests for image 3 field"""
+    def test_exercise_image_3_can_be_blank(self):
+        self.exercise.image3 = ""
+        self._assert_exercise_is_valid()
+
+    def test_exercise_image_3_can_be_null(self):
+        self.exercise.image3 = None
+        self._assert_exercise_is_valid()
+    
+    def test_exercise_image_3_can_be_500_characters(self):
+        self.exercise.image3 = "x" * 500
+        self._assert_exercise_is_valid()
+
+    def test_exercise_image_3_cannot_be_501_characters(self):
+        self.exercise.image3 = "x" * 501
+        self._assert_exercise_is_invalid()
+
+    """Tests for image 4 field"""
+    def test_exercise_image_4_can_be_blank(self):
+        self.exercise.image4 = ""
+        self._assert_exercise_is_valid()
+
+    def test_exercise_image_4_can_be_null(self):
+        self.exercise.image4 = None
+        self._assert_exercise_is_valid()
+    
+    def test_exercise_image_4_can_be_500_characters(self):
+        self.exercise.image4 = "x" * 500
+        self._assert_exercise_is_valid()
+
+    def test_exercise_image_4_cannot_be_501_characters(self):
+        self.exercise.image4 = "x" * 501
+        self._assert_exercise_is_invalid()
+
+    def test_get_all_exercises(self):
+        exercises = Exercise.get_all_exercises()
+        self.assertEqual(exercises.count(), 2)
 
     def _assert_exercise_is_invalid(self):
         with self.assertRaises(ValidationError):

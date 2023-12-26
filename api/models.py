@@ -7,8 +7,13 @@ class Exercise(models.Model):
     muscle_group = models.CharField(max_length=30, blank=True, null=True)
     equipment = models.CharField(max_length=15, blank=True, null=True)
     level = models.CharField(max_length=15, blank=True, null=True)
+    image1 = models.CharField(max_length=500, null=True, blank=True)
+    image2 = models.CharField(max_length=500, null=True, blank=True)
+    image3 = models.CharField(max_length=500, null=True, blank=True)
+    image4 = models.CharField(max_length=500, null=True, blank=True)
 
-class Image(models.Model):
-    url = models.CharField(max_length=500)
-    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    class Meta:
+        ordering = ["muscle_group"]
 
+    def get_all_exercises():
+        return Exercise.objects.all()
