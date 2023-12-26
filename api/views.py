@@ -10,12 +10,10 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         name = request.query_params.get('name')
-        if name:
-            queryset = self.queryset.filter(name=name)
-        else:
-            queryset = self.queryset.all()
+        queryset = self.queryset.filter(name=name) if name else self.queryset.all()
         serializer = self.get_serializer(queryset, many=True)
+
+        if not serializer.data:
+            return Response({"error": "Exercise not found"}, status=status.HTTP_404_NOT_FOUND)
+        
         return Response(serializer.data)
-    
-    
-    
