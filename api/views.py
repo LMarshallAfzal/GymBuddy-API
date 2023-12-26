@@ -17,3 +17,12 @@ class ExerciseViewSet(viewsets.ModelViewSet):
             return Response({"error": "Exercise not found"}, status=status.HTTP_404_NOT_FOUND)
         
         return Response(serializer.data)
+    
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    
