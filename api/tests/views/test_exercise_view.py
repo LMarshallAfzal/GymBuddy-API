@@ -1,8 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
-from django.urls import reverse
 from api.views import ExerciseViewSet
-import os
+from api.models import Exercise
 
 class ExerciseViewSetTestCase(APITestCase):
     fixtures = [
@@ -11,6 +10,16 @@ class ExerciseViewSetTestCase(APITestCase):
 
     def setUp(self):
         self.url = '/exercises/'
+        self.form_input = {
+            "name": "Hip Lift with Band",
+            "description": "Lift your hips up with a band over your waist attached to weights",
+            "type": "Powerlifting",
+            "muscle_group": "Calves",
+            "equipment": "Bands",
+            "level": "Beginner",
+            "image1": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/738/Female/l/738_1.jpg",
+            "image2": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/738/Female/l/738_2.jpg"
+        }
 
     def test_get_all_exercises_url(self):
         self.assertEqual(self.url, f'/exercises/')
@@ -54,4 +63,16 @@ class ExerciseViewSetTestCase(APITestCase):
         url = f"{self.url}{exercise_id}/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_create_exercise_success(self):
+        before = Exercise.objects.count()
+        response = self.client.post(self.url, self.form_input)
+        after = Exercise.objects.count()
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(after, before + 1)
+
+    def test_create_exercises_invalid_data(self):
+        self.form_input["name"] = ""
+        response = self.client.post(self.url, self.form_input)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
