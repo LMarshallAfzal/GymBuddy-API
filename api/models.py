@@ -16,4 +16,4 @@ class Exercise(models.Model):
         ordering = ["muscle_group"]
 
     def get_all_exercises():
-        return Exercise.objects.all()
+        return Exercise.objects.all()        
