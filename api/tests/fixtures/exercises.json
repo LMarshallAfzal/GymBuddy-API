@@ -1,0 +1,47 @@
+[    
+    {
+        "model": "api.exercise",
+        "pk": 0,
+        "fields": {
+            "name": "Push-up",
+            "description": "Push up from the floor with your arms",
+            "type": "Strength",
+            "muscle_group": "Chest",
+            "equipment": "Other",
+            "image1": "https://exampleImage.jpg",
+            "image2": "https://exampleImage.jpg",
+            "image3": "https://exampleImage.jpg",
+            "image4": "https://exampleImage.jpg"
+        }
+    },
+    {
+        "model": "api.exercise",
+        "pk": 1,
+        "fields": {
+            "name": "Squat",
+            "description": "Push your bum back and bend your legs then stand up again",
+            "type": "Strength",
+            "muscle_group": "Quads",
+            "equipment": "Other",
+            "image1": "https://exampleImage.jpg",
+            "image2": "https://exampleImage.jpg",
+            "image3": "https://exampleImage.jpg",
+            "image4": "https://exampleImage.jpg"
+        }
+    },
+    {
+        "model": "api.exercise",
+        "pk": 2,
+        "fields": {
+            "name": "Bicep curl",
+            "description": "Curl a dumbbell while keeping your upper arm as straight as possible",
+            "type": "Strength",
+            "muscle_group": "Dumbbells",
+            "equipment": "Other",
+            "image1": "https://exampleImage.jpg",
+            "image2": "https://exampleImage.jpg",
+            "image3": "https://exampleImage.jpg",
+            "image4": "https://exampleImage.jpg"
+        }
+    }
+]
