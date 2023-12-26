@@ -1,17 +1,11 @@
 from rest_framework import viewsets
-from api.serializers import ExerciseSerializer, ImageSerializer
-from api.models import Exercise, Image
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework import status
+from api.serializers import ExerciseSerializer
+from api.models import Exercise
 
 class ExerciseViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
     queryset = Exercise.get_all_exercises()
     serializer_class = ExerciseSerializer
-
-class ImageViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Image.get_all_images()
-    serializer_class = ImageSerializer
+    
