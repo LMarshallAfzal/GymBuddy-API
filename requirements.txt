@@ -1,6 +1,7 @@
 asgiref==3.7.2
 Django==5.0
 djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
 pytz==2023.3.post1
 sqlparse==0.4.4
 typing_extensions==4.9.0
@@ -8,3 +9,4 @@ Faker==21.0.0
 openpyxl==3.1.2
 tqdm==4.66.1
 coverage==7.3.4
+drf-yasg==1.21.7

@@ -1,0 +1,288 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "GymBuddy API",
+        "description": "GymBuddy is a powerful yet user-friendly API that empowers developers to build innovative fitness applications. With GymBuddy, you can access a wealth of exercise data to bring your users' fitness goals to life.",
+        "termsOfService": "https://www.google.com/policies/terms/",
+        "contact": {
+            "email": "Loma256@gmail.com"
+        },
+        "license": {
+            "name": "MIT License"
+        },
+        "version": "v1"
+    },
+    "host": "127.0.0.1:8000",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Basic": {
+            "type": "basic"
+        }
+    },
+    "security": [
+        {
+            "Basic": []
+        }
+    ],
+    "paths": {
+        "/exercises/": {
+            "get": {
+                "operationId": "exercises_list",
+                "summary": "Retrieve a list of exercises.",
+                "description": "Optionally filter exercises by name.\n\nParameters\n- name (str, optional): Filter exercises by name.",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "An exercise name within the database.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Exercise"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "exercises"
+                ]
+            },
+            "post": {
+                "operationId": "exercises_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Exercise"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Exercise"
+                        }
+                    }
+                },
+                "tags": [
+                    "exercises"
+                ]
+            },
+            "parameters": []
+        },
+        "/exercises/{id}/": {
+            "get": {
+                "operationId": "exercises_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Exercise"
+                        }
+                    }
+                },
+                "tags": [
+                    "exercises"
+                ]
+            },
+            "put": {
+                "operationId": "exercises_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Exercise"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Exercise"
+                        }
+                    }
+                },
+                "tags": [
+                    "exercises"
+                ]
+            },
+            "patch": {
+                "operationId": "exercises_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Exercise"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Exercise"
+                        }
+                    }
+                },
+                "tags": [
+                    "exercises"
+                ]
+            },
+            "delete": {
+                "operationId": "exercises_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "exercises"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this exercise.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "Exercise": {
+            "required": [
+                "name"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string",
+                    "maxLength": 255,
+                    "x-nullable": true
+                },
+                "type": {
+                    "title": "Type",
+                    "type": "string",
+                    "maxLength": 25,
+                    "x-nullable": true
+                },
+                "muscle_group": {
+                    "title": "Muscle group",
+                    "type": "string",
+                    "maxLength": 30,
+                    "x-nullable": true
+                },
+                "equipment": {
+                    "title": "Equipment",
+                    "type": "string",
+                    "maxLength": 15,
+                    "x-nullable": true
+                },
+                "level": {
+                    "title": "Level",
+                    "type": "string",
+                    "maxLength": 15,
+                    "x-nullable": true
+                },
+                "image1": {
+                    "title": "Image1",
+                    "type": "string",
+                    "maxLength": 500,
+                    "x-nullable": true
+                },
+                "image2": {
+                    "title": "Image2",
+                    "type": "string",
+                    "maxLength": 500,
+                    "x-nullable": true
+                },
+                "image3": {
+                    "title": "Image3",
+                    "type": "string",
+                    "maxLength": 500,
+                    "x-nullable": true
+                },
+                "image4": {
+                    "title": "Image4",
+                    "type": "string",
+                    "maxLength": 500,
+                    "x-nullable": true
+                }
+            }
+        }
+    }
+}
