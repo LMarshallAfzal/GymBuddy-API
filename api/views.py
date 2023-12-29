@@ -14,7 +14,6 @@ class ExerciseViewSet(viewsets.ModelViewSet):
     queryset = Exercise.get_all_exercises()
     serializer_class = ExerciseSerializer
 
-    @api_view(["GET"])
     def list(self, request):
         """
         Retrieve a list of exercises.
