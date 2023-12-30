@@ -27,7 +27,7 @@ class ExerciseViewSetTestCase(APITestCase):
             "name": "Bicep curl",
             "description": "Curl a dumbbell while keeping your upper arm as straight as possible",
             "type": "Strength",
-            "muscle_group": "Bicep",
+            "muscle_group": "Biceps",
             "equipment": "Dumbbell",
             "level": "Beginner",
             "image1": "https://exampleImage.jpg",
