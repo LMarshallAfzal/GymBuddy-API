@@ -11,10 +11,10 @@ class Exercise(models.Model):
     - muscle_group (CharField): The primary muscle group targeted by the exercise.
     - equipment (CharField): Any equipment required for the exercise.
     - level (CharField): The difficulty level of the exercise (e.g., beginner, intermediate, advanced).
-    - image1 (CharField): URL for the first image of the exercise.
-    - image2 (CharField): URL for the second image of the exercise.
-    - image3 (CharField): URL for the third image of the exercise.
-    - image4 (CharField): URL for the fourth image of the exercise.
+    - image1 (URLField): URL for the first image of the exercise.
+    - image2 (URLField): URL for the second image of the exercise.
+    - image3 (URLField): URL for the third image of the exercise.
+    - image4 (URLField): URL for the fourth image of the exercise.
     """
 
     name = models.CharField(max_length=255, blank=False, null=False)
