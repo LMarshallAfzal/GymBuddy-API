@@ -8,54 +8,53 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate_name(self, value):
-        if not value or len(value) > 255:
-            raise serializers.ValidationError("Name is required and cannot exceed 100 characters.")
+        self._validate_required_and_max_length(value, "Name", 100)
         return value
     
-    def validate_image1(self, value):
-        return self._validate_image_url(value, "image1")
-
-    def validate_image2(self, value):
-        return self._validate_image_url(value, "image2")
-    
-    def validate_image3(self, value):
-        return self._validate_image_url(value, "image3")
-
-    def validate_image4(self, value):
-        return self._validate_image_url(value, "image4")
+    def validate_image_urls(self, value):
+        """Validates all image URLs."""
+        image_fields = ["image1", "image2", "image3", "image4"]
+        for field_name in image_fields:
+            self._validate_image_url(value.get(field_name), field_name)
+        return value
     
     def validate(self, data):
         super().validate(data)
 
-        valid_muscle_groups = ["Chest", "Forearms", "Lats", "Middle Back", "Lower Back", "Neck", "Quadriceps", "Hamstrings", "Calves", "Triceps", "Traps", "Shoulders", "Abdominals", "Glutes", "Biceps", "Adductors", "Abductors"]
-        if data["muscle_group"] not in valid_muscle_groups:
-            raise serializers.ValidationError(
-                "Invalid muscle group, it must be one of the following: Chest, Forearms, Lats, Middle Back, Lower Back, Neck, Quadriceps, Hamstrings, Calves, Triceps, Traps, Shoulders, Abdominals, Glutes, Biceps, Adductors, or Abductors"
-            )
-        
-        valid_types = ["Cardio", "Olympic Weightlifting", "Plyometrics", "Powerlifting", "Strength", "Stretching", "Strongman"]
-        if data["type"] not in valid_types:
-            raise serializers.ValidationError(
-                "Invalid exercise type: it must be one of the following: Cardio, Olympic Weightlifting, Plyometrics, Powerlifting, Strength, or Strongman"
-            )
-        
-        valid_equipment = ["Bands", "Foam Roll", "Barbell", "Kettlebells", "Body Only", "Machine", "Cable", "Medicine Ball", "Dumbbell", "None", "E-Z Curl Bar", "Other", "Exercise Ball"]
-        if data["equipment"] not in valid_equipment:
-            raise serializers.ValidationError(
-                "Invalid equipment: it must be one of the following: Bands, Foam Roll, Barbell, Kettlebells, Body Only, Machine, Cable, Medicine, Dumbbell, None, E-Z Bar Curl, Other, Exercise Ball"
-            )
+        self._validate_choices(data, "muscle_group", valid_values=[
+            "Chest", "Forearms", "Lats", "Middle Back", "Lower Back", "Neck", "Quadriceps", "Hamstrings", "Calves", "Triceps", "Traps", "Shoulders", "Abdominals", "Glutes", "Biceps", "Adductors", "Abductors"
+        ])
+        self._validate_choices(data, "type", valid_values=[
+            "Cardio", "Olympic Weightlifting", "Plyometrics", "Powerlifting", "Strength", "Stretching", "Strongman"
+        ])
+        self._validate_choices(data, "equipment", valid_values=[
+            "Bands", "Foam Roll", "Barbell", "Kettlebells", "Body Only", "Machine", "Cable", "Medicine Ball", "Dumbbell", "None", "E-Z Curl Bar", "Other", "Exercise Ball"
+        ])
+
+        self._validate_at_least_one_image_url(data)
 
         if not any(value for value in data.values() if value and value.startswith("http")):
             raise serializers.ValidationError("At least one image URL is required.")
 
         return data
     
+    def _validate_required_and_max_length(self, value, field_name, max_length):
+        if not value or len(value) > max_length:
+            raise serializers.ValidationError(f"{field_name} is required and cannot exceed {max_length} characters.")
+
     def _validate_image_url(self, value, field_name):
         if value:
             try:
-                parsed_url = urllib.parse.urlparse(value)
-                if not parsed_url.scheme or not parsed_url.netloc:
-                    raise serializers.ValidationError(f"{field_name} must be a valid URL.")
+                urllib.parse.urlparse(value)
             except ValueError:
                 raise serializers.ValidationError(f"{field_name} is not a valid URL.")
-        return value
+
+    def _validate_choices(self, data, field_name, valid_values):
+        if data[field_name] not in valid_values:
+            raise serializers.ValidationError(
+                f"Invalid {field_name}, it must be one of the following: {', '.join(valid_values)}"
+            )
+
+    def _validate_at_least_one_image_url(self, data):
+        if not any(value for value in data.values() if value.startswith("http")):
+            raise serializers.ValidationError("At least one image URL is required.")
