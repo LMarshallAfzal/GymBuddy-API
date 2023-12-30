@@ -130,7 +130,7 @@ class ExerciseModelTestCase(TestCase):
         self._assert_exercise_is_valid()
     
     def test_exercise_image_1_can_be_500_characters(self):
-        self.exercise.image1 = "x" * 500
+        self.exercise.image1 = "http://www." + ("x" * 50) + ".jpg"
         self._assert_exercise_is_valid()
 
     def test_exercise_image_1_cannot_be_501_characters(self):
@@ -147,7 +147,7 @@ class ExerciseModelTestCase(TestCase):
         self._assert_exercise_is_valid()
     
     def test_exercise_image_2_can_be_500_characters(self):
-        self.exercise.image2 = "x" * 500
+        self.exercise.image2 = "http://www." + ("x" * 50) + ".jpg"
         self._assert_exercise_is_valid()
 
     def test_exercise_image_2_cannot_be_501_characters(self):
@@ -164,7 +164,7 @@ class ExerciseModelTestCase(TestCase):
         self._assert_exercise_is_valid()
     
     def test_exercise_image_3_can_be_500_characters(self):
-        self.exercise.image3 = "x" * 500
+        self.exercise.image3 = "http://www." + ("x" * 50) + ".jpg"
         self._assert_exercise_is_valid()
 
     def test_exercise_image_3_cannot_be_501_characters(self):
@@ -181,7 +181,7 @@ class ExerciseModelTestCase(TestCase):
         self._assert_exercise_is_valid()
     
     def test_exercise_image_4_can_be_500_characters(self):
-        self.exercise.image4 = "x" * 500
+        self.exercise.image4 = "http://www." + ("x" * 50) + ".jpg"
         self._assert_exercise_is_valid()
 
     def test_exercise_image_4_cannot_be_501_characters(self):
