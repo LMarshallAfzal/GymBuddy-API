@@ -24,7 +24,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         Returns:
             str: The validated name value.
         """
-        validation_helpers._validate_required_and_max_length(value, "Name", 100)
+        validation_helpers._validate_required_and_max_length(value, "Name", 255)
         return value
     
     def validate_image_urls(self, value):
