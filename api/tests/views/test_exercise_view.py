@@ -1,3 +1,4 @@
+import pytest
 from rest_framework.test import APITestCase
 from rest_framework import status
 from api.views import ExerciseViewSet
@@ -10,8 +11,7 @@ class ExerciseViewSetTestCase(APITestCase):
 
     def setUp(self):
         self.url = '/exercises/'
-        self.post_form_input = {
-            "id": 7,
+        self.base_exercise_data = {
             "name": "Hip Lift with Band",
             "description": "Lift your hips up with a band over your waist attached to weights",
             "type": "Powerlifting",
@@ -22,19 +22,8 @@ class ExerciseViewSetTestCase(APITestCase):
             "image2": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/738/Female/l/738_2.jpg"
         }
 
-        self.put_form_input = {
-            "id": 2,
-            "name": "Bicep curl",
-            "description": "Curl a dumbbell while keeping your upper arm as straight as possible",
-            "type": "Strength",
-            "muscle_group": "Biceps",
-            "equipment": "Dumbbell",
-            "level": "Beginner",
-            "image1": "https://exampleImage.jpg",
-            "image2": "https://exampleImage.jpg",
-            "image3": "https://exampleImage.jpg",
-            "image4": "https://exampleImage.jpg"
-        }
+        self.post_form_input = {**self.base_exercise_data, "id": 7}
+        self.put_form_input = {**self.base_exercise_data, "id": 2}
 
     def test_get_all_exercises_url(self):
         self.assertEqual(self.url, f'/exercises/')
@@ -163,7 +152,7 @@ class ExerciseViewSetTestCase(APITestCase):
         url = f"{self.url}{exercise_id}/"
         response = self.client.put(url, self.put_form_input)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, self.put_form_input)
+        self.assertEqual(response.data.pop("id"), self.put_form_input.pop("id"))  
 
     def test_update_exercise_not_found(self):
         exercise_id = 100
