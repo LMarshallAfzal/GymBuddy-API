@@ -11,10 +11,10 @@ class Exercise(models.Model):
     - muscle_group (CharField): The primary muscle group targeted by the exercise.
     - equipment (CharField): Any equipment required for the exercise.
     - level (CharField): The difficulty level of the exercise (e.g., beginner, intermediate, advanced).
-    - image1 (CharField): URL for the first image of the exercise.
-    - image2 (CharField): URL for the second image of the exercise.
-    - image3 (CharField): URL for the third image of the exercise.
-    - image4 (CharField): URL for the fourth image of the exercise.
+    - image1 (URLField): URL for the first image of the exercise.
+    - image2 (URLField): URL for the second image of the exercise.
+    - image3 (URLField): URL for the third image of the exercise.
+    - image4 (URLField): URL for the fourth image of the exercise.
     """
 
     name = models.CharField(max_length=255, blank=False, null=False)
@@ -23,10 +23,10 @@ class Exercise(models.Model):
     muscle_group = models.CharField(max_length=30, blank=True, null=True)
     equipment = models.CharField(max_length=15, blank=True, null=True)
     level = models.CharField(max_length=15, blank=True, null=True)
-    image1 = models.CharField(max_length=500, null=True, blank=True)
-    image2 = models.CharField(max_length=500, null=True, blank=True)
-    image3 = models.CharField(max_length=500, null=True, blank=True)
-    image4 = models.CharField(max_length=500, null=True, blank=True)
+    image1 = models.URLField(max_length=500, null=True, blank=True)
+    image2 = models.URLField(max_length=500, null=True, blank=True)
+    image3 = models.URLField(max_length=500, null=True, blank=True)
+    image4 = models.URLField(max_length=500, null=True, blank=True)
 
     class Meta:
         ordering = ["muscle_group"]
