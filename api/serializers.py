@@ -74,9 +74,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
         validation_helpers._validate_at_least_one_image_url(data)
 
-        if not any(value for value in data.values() if value and value.startswith("http")):
-            raise serializers.ValidationError("At least one image URL is required.")
-
         return data
     
     

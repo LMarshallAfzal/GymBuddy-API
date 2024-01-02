@@ -19,5 +19,5 @@ def _validate_choices(data, field_name, valid_values):
         )
 
 def _validate_at_least_one_image_url(data):
-    if not any(value for value in data.values() if value.startswith("http")):
+    if not any(value and value.startswith("http") for value in data.values()):
         raise serializers.ValidationError("At least one image URL is required.")

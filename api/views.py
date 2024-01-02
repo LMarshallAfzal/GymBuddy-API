@@ -1,5 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework_simple_api_key.backends import APIKeyAuthentication
+from rest_framework.authentication import BasicAuthentication
+from api.auth import ApiKeyAuthentication
 from api.serializers import ExerciseSerializer
 from api.models import Exercise
 
@@ -11,6 +14,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
     """
     queryset = Exercise.get_all_exercises()
     serializer_class = ExerciseSerializer
+    authentication_classes=[BasicAuthentication, ApiKeyAuthentication]
 
     def _get_queryset(self, name=None):
         """Helper function to retrieve and filter exercises."""
