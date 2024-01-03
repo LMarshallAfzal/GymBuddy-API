@@ -33,8 +33,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_simplejwt',
-    'rest_framework_simple_api_key',
     'drf_yasg',
     'api'
 ]
@@ -99,16 +97,14 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'  # Base URL for serving static files
+STATIC_URL = '/static/'  # Base URL for serving static files
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'api.auth.ApiKeyAuthentication',
-        'rest_framework.authentication.BasicAuthentication'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
