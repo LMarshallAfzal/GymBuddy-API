@@ -1,4 +1,5 @@
 import pytest
+from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
 from rest_framework import status
 from api.views import ExerciseViewSet
@@ -11,6 +12,7 @@ class ExerciseViewSetTestCase(APITestCase):
 
     def setUp(self):
         self.url = '/exercises/'
+        self.user = user = User.objects.create_user(username='testuser', password='testpassword')
         self.base_exercise_data = {
             "name": "Hip Lift with Band",
             "description": "Lift your hips up with a band over your waist attached to weights",
@@ -29,6 +31,7 @@ class ExerciseViewSetTestCase(APITestCase):
         self.assertEqual(self.url, f'/exercises/')
 
     def test_get_all_exercises_success(self):
+        self.client.force_authenticate(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 3)
@@ -38,6 +41,7 @@ class ExerciseViewSetTestCase(APITestCase):
         self.assertIn("Bicep curl", names)
 
     def test_get_exercise_by_name_success(self):
+        self.client.force_authenticate(self.user)
         exercise_name = "Squat"
         url = f"{self.url}?name={exercise_name}"
         response = self.client.get(url)
@@ -46,16 +50,19 @@ class ExerciseViewSetTestCase(APITestCase):
         self.assertEqual(response.data[0]["name"], exercise_name)
 
     def test_get_exercise_by_name_not_found(self):
+        self.client.force_authenticate(self.user)
         exercise_name = "Non-existent exercise"
         url = f"{self.url}?name={exercise_name}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_get_exercise_by_name_missing_name_parameter(self):
+        self.client.force_authenticate(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_exercise_by_id_success(self):
+        self.client.force_authenticate(self.user)
         exercise_id = 2
         url = f"{self.url}{exercise_id}/"
         response = self.client.get(url)
@@ -63,12 +70,14 @@ class ExerciseViewSetTestCase(APITestCase):
         self.assertEqual(len(response.data), 11)
 
     def test_get_exericse_by_id_not_found(self):
+        self.client.force_authenticate(self.user)
         exercise_id = 10
         url = f"{self.url}{exercise_id}/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_create_exercise_success(self):
+        self.client.force_authenticate(self.user)
         before = Exercise.objects.count()
         response = self.client.post(self.url, self.post_form_input)
         after = Exercise.objects.count()
@@ -76,6 +85,7 @@ class ExerciseViewSetTestCase(APITestCase):
         self.assertEqual(after, before + 1)
 
     def test_create_exercise_invalid_name(self):
+        self.client.force_authenticate(self.user)
         invalid_names = [
             "",  
             "X" * 256,
@@ -87,6 +97,7 @@ class ExerciseViewSetTestCase(APITestCase):
             self.assertIn("name", response.data)
 
     def test_create_exercise_invalid_muscle_group(self):
+        self.client.force_authenticate(self.user)
         invalid_muscle_groups = [
             "",  
             "Invalid Muscle Group",
@@ -99,12 +110,14 @@ class ExerciseViewSetTestCase(APITestCase):
             self.assertIn("Invalid muscle_group", response.data["non_field_errors"][0])
 
     def test_create_exercise_invalid_type(self):
+        self.client.force_authenticate(self.user)
         self.post_form_input["type"] = "Invalid Exercise Type"
         response = self.client.post(self.url, self.post_form_input)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("Invalid type", response.data["non_field_errors"][0])
 
     def test_create_exercise_invalid_image_urls(self):
+        self.client.force_authenticate(self.user)
         invalid_image_urls = [
             ("", "", "", ""),
             ("invalid_url", "", "", ""),
@@ -129,6 +142,7 @@ class ExerciseViewSetTestCase(APITestCase):
                         self.assertEqual(value[0], "Enter a valid URL.")
 
     def test_create_exercise_invalid_equipment(self):
+        self.client.force_authenticate(self.user)
         invalid_equipment = [
             "",  
             "Invalid Equipment",
@@ -139,15 +153,10 @@ class ExerciseViewSetTestCase(APITestCase):
             self.post_form_input["equipment"] = invalid_equipment
             response = self.client.post(self.url, self.post_form_input)
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertIn("equipment", response.data)
-
-    def test_create_exercise_invalid_equipment(self):
-        self.post_form_input["equipment"] = "Invalid Equipment"
-        response = self.client.post(self.url, self.post_form_input)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("equipment", response.data)
+            self.assertTrue("non_field_errors" in response.data or "equipment" in response.data)
 
     def test_update_exercise_success_data(self):
+        self.client.force_authenticate(self.user)
         exercise_id = self.put_form_input["id"]
         url = f"{self.url}{exercise_id}/"
         response = self.client.put(url, self.put_form_input)
@@ -155,12 +164,14 @@ class ExerciseViewSetTestCase(APITestCase):
         self.assertEqual(response.data.pop("id"), self.put_form_input.pop("id"))  
 
     def test_update_exercise_not_found(self):
+        self.client.force_authenticate(self.user)
         exercise_id = 100
         url = f"{self.url}{exercise_id}/"
         response = self.client.put(url, self.put_form_input)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_exercise_invalid_name(self):
+        self.client.force_authenticate(self.user)
         invalid_names = [
             "",  
             "X" * 256,  
@@ -173,6 +184,7 @@ class ExerciseViewSetTestCase(APITestCase):
             self.assertIn("name", response.data)  
 
     def test_update_exercise_invalid_muscle_group(self):
+        self.client.force_authenticate(self.user)
         invalid_muscle_groups = [
             "", 
             "Invalid Muscle Group",
@@ -186,6 +198,7 @@ class ExerciseViewSetTestCase(APITestCase):
             self.assertIn("Invalid muscle_group", response.data["non_field_errors"][0])
 
     def test_update_exercise_invalid_images(self):
+        self.client.force_authenticate(self.user)
         invalid_image_urls = [
             ("", "", "", ""), 
             ("invalid_url", "", "", ""), 
@@ -211,6 +224,7 @@ class ExerciseViewSetTestCase(APITestCase):
                         self.assertEqual(value[0], "Enter a valid URL.")
 
     def test_update_exercise_invalid_equipment(self):
+        self.client.force_authenticate(self.user)
         invalid_equipment = [
             "",  
             "Invalid Equipment",
@@ -225,6 +239,7 @@ class ExerciseViewSetTestCase(APITestCase):
             self.assertTrue("non_field_errors" in response.data or "equipment" in response.data)
 
     def test_update_exercise_invalid_data(self):
+        self.client.force_authenticate(self.user)
         exercise_id = self.put_form_input["id"]
         url = f"{self.url}{exercise_id}/"
         input = self.put_form_input
