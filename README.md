@@ -59,9 +59,10 @@ Interacting with GymBuddy API is straightforward. Here's a guide to get started
     - **DELETE**: Delete resources (e.g., remove an exercise).
 
 3. **Authentication:**
-    - Currently, no authentication is required to access the API
-    - (If authentication is implementd, provide details here)
-
+    - The API currently uses a custom authentication mechanism based on API keys.
+    - To authenticate requests, you need to include a valid API key in the 'Authorization' header of your HTTP requests.
+    - For non-GET requests, the API key must be valid, and failure to provide a valid key will result in an `AuthenticationFailed` response.
+    - For GET requests, no authentication is required, allowing unauthenticated access to certain endpoints.
 
 ## Contributing
 Contributions are welcome! Feel free to open issues and pull requests.
