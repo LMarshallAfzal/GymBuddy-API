@@ -1,6 +1,5 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import action
 
 from api.auth import ApiKeyAuthentication
 from api.serializers import ExerciseSerializer
@@ -33,7 +32,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
             A JSON response containing a list of exercise data.
         """
         name = request.query_params.get('name')
-        queryset = view_helpers._get_queryset(name=name)
+        queryset = self.view_helpers._get_queryset(name=name)
         serializer = self.get_serializer(queryset, many=True)
 
         if not serializer.data:
