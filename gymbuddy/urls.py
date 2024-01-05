@@ -7,7 +7,7 @@ from api.views import ExerciseViewSet
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="GymBuddy API",
+        title="Gym Buddy API",
         default_version='v1',
         description="GymBuddy is a powerful yet user-friendly API that empowers developers to build innovative fitness applications. With GymBuddy, you can access a wealth of exercise data to bring your users' fitness goals to life.",
         terms_of_service="https://www.google.com/policies/terms/",
