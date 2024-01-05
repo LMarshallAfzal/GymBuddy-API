@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 
 from api.auth import ApiKeyAuthentication
 from api.serializers import ExerciseSerializer
+from api.helpers import view_helpers
 from api.models import Exercise
 
 class ExerciseViewSet(viewsets.ModelViewSet):
@@ -15,11 +16,6 @@ class ExerciseViewSet(viewsets.ModelViewSet):
     queryset = Exercise.get_all_exercises()
     serializer_class = ExerciseSerializer
     authentication_classes=[ApiKeyAuthentication]
-
-    def _get_queryset(self, name=None):
-        """Helper function to retrieve and filter exercises."""
-        queryset = self.queryset.filter(name=name) if name else self.queryset.all()
-        return queryset
 
     def list(self, request):
         """
@@ -37,7 +33,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
             A JSON response containing a list of exercise data.
         """
         name = request.query_params.get('name')
-        queryset = self._get_queryset(name=name)
+        queryset = view_helpers._get_queryset(name=name)
         serializer = self.get_serializer(queryset, many=True)
 
         if not serializer.data:
