@@ -1,7 +1,5 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import AllowAny
 
 from api.auth import ApiKeyAuthentication
 from api.serializers import ExerciseSerializer
@@ -22,7 +20,6 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         queryset = self.queryset.filter(name=name) if name else self.queryset.all()
         return queryset
 
-    @permission_classes([AllowAny])
     def list(self, request):
         """
         Retrieve a list of exercises.

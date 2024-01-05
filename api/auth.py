@@ -30,10 +30,13 @@ class ApiKeyAuthentication(BaseAuthentication):
         """
         api_key = request.headers.get("Authorization")
 
-        if api_key is None:
+        if request.method == "GET":
+            return (None, None)
+        
+        elif api_key is None:
             raise AuthenticationFailed("No valid API key present")
         
-        if api_key == config('API_KEY'):
+        elif api_key == config('API_KEY'):
             return (None, None)
         else:
             raise AuthenticationFailed("Invalid API Key")
