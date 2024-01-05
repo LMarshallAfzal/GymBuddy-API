@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from api.models import Exercise
-from .helpers import validation_helpers
+from api.helpers import validation_helpers
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
