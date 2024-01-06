@@ -22,5 +22,5 @@ COPY . .
 EXPOSE 8000
 
 # Command to run on container start
-CMD ["gunicorn", "gymbuddy.wsgi.application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "gymbuddy.wsgi:application", "--bind", "0.0.0.0:8000"]
 
