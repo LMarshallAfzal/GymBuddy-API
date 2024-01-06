@@ -1,0 +1,15 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "gymbuddy",
+            "image": "your-docker-image",
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 8000
+                }
+            ]
+        }
+    ]
+}
