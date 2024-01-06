@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "gymbuddy",
-            "image": "your-docker-image",
+            "image": "630913183786.dkr.ecr.eu-west-2.amazonaws.com/gymbuddy-api:latest",
             "portMappings": [
                 {
                     "hostPort": 80,
