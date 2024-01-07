@@ -41,6 +41,7 @@ class Command(BaseCommand):
                     )
                 except IntegrityError:
                     warnings.append(f'Exercise with name "{name}" already exists. Skipping...')
+                    
                 else:
                     pbar.update(1)
 

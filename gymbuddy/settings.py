@@ -20,10 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
+ENVIRONMENT = config('DJANGO_ENV', default='development')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -67,12 +69,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gymbuddy.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if ENVIRONMENT == 'production':
+    # Use PostgreSQL for production
+        DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'gymbuddy-db-1',
+            'USER': config('DB_USER_PROD'),
+            'PASSWORD': config('DB_PASSWORD_PROD'),
+            'HOST': config('DB_HOST_PROD'),
+            'PORT': config('DB_PORT_PROD', default='5432'),
+        }
     }
-}
+
+else:
+    # Use SQLite for development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
