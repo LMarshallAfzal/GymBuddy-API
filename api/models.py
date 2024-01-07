@@ -17,7 +17,7 @@ class Exercise(models.Model):
     - image4 (URLField): URL for the fourth image of the exercise.
     """
 
-    name = models.CharField(max_length=255, blank=False, null=False)
+    name = models.CharField(unique=True, max_length=255, blank=False, null=False)
     description = models.TextField(max_length=255, blank=True, null=True)
     type = models.CharField(max_length=25, blank=True, null=True)
     muscle_group = models.CharField(max_length=30, blank=True, null=True)

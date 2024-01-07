@@ -1,5 +1,6 @@
 import openpyxl
 from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
 from tqdm import tqdm
 from api.models import Exercise
 
@@ -12,6 +13,7 @@ class Command(BaseCommand):
 
         total_rows = sheet.max_row - 1
         with tqdm(total=total_rows, desc='Seeding Exercises') as pbar:
+            warnings = []
             for row in sheet.iter_rows(min_row=2):
                 name = row[0].value
                 description = row[1].value
@@ -24,20 +26,26 @@ class Command(BaseCommand):
                 equipment = row[8].value
                 level = row[9].value
 
-                Exercise.objects.create(
-                    name=name,
-                    description=description,
-                    type=type,
-                    muscle_group=muscle_group,
-                    equipment=equipment,
-                    level=level,
-                    image1=image_1,
-                    image2=image_2,
-                    image3=image_3,
-                    image4=image_4
-                )
+                try:
+                    Exercise.objects.create(
+                        name=name,
+                        description=description,
+                        type=type,
+                        muscle_group=muscle_group,
+                        equipment=equipment,
+                        level=level,
+                        image1=image_1,
+                        image2=image_2,
+                        image3=image_3,
+                        image4=image_4
+                    )
+                except IntegrityError:
+                    warnings.append(f'Exercise with name "{name}" already exists. Skipping...')
+                else:
+                    pbar.update(1)
 
-                pbar.update(1)
+            for warning in warnings:
+                self.stdout.write(self.style.WARNING(warning))
 
         self.stdout.write(self.style.SUCCESS('Database seeded successfully!'))
 
