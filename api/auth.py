@@ -12,10 +12,6 @@ class ApiKeyAuthentication(BaseAuthentication):
     This authentication class checks for the presence of a valid API key in the
     'Authorization' header of the request. If the API key is valid, the request
     is considered authenticated; otherwise, an AuthenticationFailed exception is raised.
-
-    Note: This implementation uses a static API key stored in the project's configuration.
-    For production, consider more secure methods such as dynamic key generation or integration
-    with a secure vault service.
     """
     def authenticate(self, request):
         """
@@ -52,13 +48,24 @@ class ApiKeyAuthentication(BaseAuthentication):
             if api_key == secret_value:
                 return (None, None)
             else:
-                print(secret_value)
                 raise AuthenticationFailed("Invalid API Key")
             
         except NoCredentialsError:   
             raise AuthenticationFailed("Unable to authenticate due to missing AWS credentials")
         
     def get_secret(self, secret_name):
+        """
+        Retrieve the a key value from AWS Secrets Manager.
+
+        Parameters:
+        - secret_name (str): The name or ARN of the secret containing the secret key/value pair.
+
+        Returns:
+        - str: The key value.
+
+        Raises:
+        - AuthenticationFailed: If an error occurs while retrieving the secret.
+        """
         client = boto3.client(
             service_name='secretsmanager',
             region_name='eu-west-2'
