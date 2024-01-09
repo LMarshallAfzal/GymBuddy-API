@@ -44,7 +44,7 @@ class ApiKeyAuthentication(BaseAuthentication):
 
             secret_value = get_secret(secret_name, key_pair_name)
 
-            if api_key == secret_value:
+            if secret_value is not None and api_key == secret_value:
                 return (None, None)
             else:
                 raise AuthenticationFailed("Invalid API Key")
