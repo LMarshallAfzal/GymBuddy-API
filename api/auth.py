@@ -2,6 +2,7 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from api.utils import get_secret
 from botocore.exceptions import NoCredentialsError
+from decouple import config
 
 class ApiKeyAuthentication(BaseAuthentication):
     """
@@ -51,3 +52,12 @@ class ApiKeyAuthentication(BaseAuthentication):
             
         except NoCredentialsError:   
             raise AuthenticationFailed("Unable to authenticate due to missing AWS credentials")
+        
+        except Exception as e:
+            print(f"Error retrieving secret from AWS Secrets Manager: {e}")
+            fallback_api_key = config('API_Key')
+            
+            if api_key == fallback_api_key:
+                return (None, None)
+            else:
+                raise AuthenticationFailed("Invalid API Key")
