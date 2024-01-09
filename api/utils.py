@@ -25,9 +25,8 @@ def get_secret(secret_name, key_pair_name):
         secret = response['SecretString']
         secret_dict = json.loads(secret)
         secret_value = secret_dict.get(key_pair_name)
-
+        
         return secret_value
     
     except ClientError as e:
-        print(f"Error retrieving secret from AWS Secrets Manager: {e}")
-        return None
+        raise(f"Error retrieving secret from AWS Secrets Manager: {e}")

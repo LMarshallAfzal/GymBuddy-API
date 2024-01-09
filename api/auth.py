@@ -40,14 +40,18 @@ class ApiKeyAuthentication(BaseAuthentication):
         #     raise AuthenticationFailed("Invalid API Key")
         
         try: 
-            secret_name = "prod/gymbuddy/api-key"
-            key_pair_name = "API_Key"
+            if config('ENVIRONMENT') == 'production':
+                secret_name = "prod/gymbuddy/api-key"
+                key_pair_name = "API_Key"
 
-            secret_value = get_secret(secret_name, key_pair_name)
+                secret_value = get_secret(secret_name, key_pair_name)
 
-            if secret_value is not None and api_key == secret_value:
-                return (None, None)
-            elif api_key == config('API_Key'):
+                if api_key == secret_value:
+                    return (None, None)        
+                else:
+                    raise AuthenticationFailed("Invalid API Key")
+                
+            if api_key == config('API_Key'):
                 return (None, None)
             else:
                 raise AuthenticationFailed("Invalid API Key")
@@ -55,11 +59,4 @@ class ApiKeyAuthentication(BaseAuthentication):
         except NoCredentialsError:   
             raise AuthenticationFailed("Unable to authenticate due to missing AWS credentials")
         
-        except Exception as e:
-            print(f"Error retrieving secret from AWS Secrets Manager: {e}")
-            fallback_api_key = config('API_Key')
-            
-            if api_key == fallback_api_key:
-                return (None, None)
-            else:
-                raise AuthenticationFailed("Invalid API Key")
+        
