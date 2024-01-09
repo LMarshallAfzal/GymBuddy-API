@@ -41,14 +41,14 @@ class ApiKeyAuthentication(BaseAuthentication):
         
         try:
             if config('ENVIRONMENT') == 'development':
-                if api_key == config('API_Key'):
+                if api_key == config('API_KEY'):
                     return (None, None)
                 else:
                     raise AuthenticationFailed("Invalid API Key")
             
             if config('ENVIRONMENT') == 'production':
                 secret_name = "prod/gymbuddy/api-key"
-                key_pair_name = "API_Key"
+                key_pair_name = "API_KEY"
 
                 secret_value = get_secret(secret_name, key_pair_name)
 

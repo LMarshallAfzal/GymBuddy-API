@@ -16,6 +16,7 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
           echo "ENVIRONMENT=development" >> $GITHUB_ENV
+          echo "API_Key=sdjfkl;aj;dj;asdjg;sd" >> $GITHUB_ENV
       
       - name: Set up Python  
         uses: actions/setup-python@v3
