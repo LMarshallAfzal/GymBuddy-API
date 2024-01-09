@@ -12,20 +12,26 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from api.utils import get_secret
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
 
-ENVIRONMENT = config('DJANGO_ENV', default='development')
+# DEVELOPMENT: This is the secret key for development
+# SECRET_KEY = config('SECRET_KEY')
+
+# PRODUCTION: This is the secret key for production
+SECRET_KEY = get_secret('prod/gymbuddy/django-secrets', 'SECRET_KEY') or config('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -69,27 +75,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gymbuddy.wsgi.application'
 
-if ENVIRONMENT == 'production':
-    # Use PostgreSQL for production
-        DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'gymbuddy-db-1',
-            'USER': config('DB_USER_PROD'),
-            'PASSWORD': config('DB_PASSWORD_PROD'),
-            'HOST': config('DB_HOST_PROD'),
-            'PORT': config('DB_PORT_PROD', default='5432'),
-        }
-    }
+# if ENVIRONMENT == 'production':
+#     # Use PostgreSQL for production
+#         DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'gymbuddy-db-1',
+#             'USER': config('DB_USER_PROD'),
+#             'PASSWORD': config('DB_PASSWORD_PROD'),
+#             'HOST': config('DB_HOST_PROD'),
+#             'PORT': config('DB_PORT_PROD', default='5432'),
+#         }
+#     }
 
-else:
+# else:
     # Use SQLite for development
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
