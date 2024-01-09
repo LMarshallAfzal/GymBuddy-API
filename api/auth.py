@@ -47,6 +47,8 @@ class ApiKeyAuthentication(BaseAuthentication):
 
             if secret_value is not None and api_key == secret_value:
                 return (None, None)
+            elif api_key == config('API_Key'):
+                return (None, None)
             else:
                 raise AuthenticationFailed("Invalid API Key")
             
