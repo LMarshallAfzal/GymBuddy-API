@@ -15,7 +15,7 @@ jobs:
       - name: Set environment variables
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
-          echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          echo "ENVIRONMENT=devlopment" >> $GITHUB_ENV
       
       - name: Set up Python  
         uses: actions/setup-python@v3
