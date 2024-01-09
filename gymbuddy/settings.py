@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = config('SECRET_KEY')
 
 # PRODUCTION: This is the secret key for production
-SECRET_KEY = get_secret('prod/gymbuddy/django-secrets', 'SECRET_KEY')
+SECRET_KEY = get_secret('prod/gymbuddy/django-secrets', 'SECRET_KEY') or config('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
