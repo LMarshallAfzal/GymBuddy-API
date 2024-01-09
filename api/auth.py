@@ -34,29 +34,22 @@ class ApiKeyAuthentication(BaseAuthentication):
         elif api_key is None:
             raise AuthenticationFailed("No valid API key present")
         
-        # elif api_key == config('API_KEY'):
-        #     return (None, None)
-        # else:
-        #     raise AuthenticationFailed("Invalid API Key")
-        
         try:
-            if config('ENVIRONMENT') == 'development':
-                if api_key == config('API_KEY'):
-                    return (None, None)
-                else:
-                    raise AuthenticationFailed("Invalid API Key")
+            # if api_key == config('API_KEY'):
+            #     return (None, None)
+            # else:
+            #     raise AuthenticationFailed("Invalid API Key")
+        
+            secret_name = "prod/gymbuddy/api-key"
+            key_pair_name = "API_KEY"
+
+            secret_value = get_secret(secret_name, key_pair_name)
+
+            if api_key == secret_value:
+                return (None, None)        
+            else:
+                raise AuthenticationFailed("Invalid API Key")
             
-            if config('ENVIRONMENT') == 'production':
-                secret_name = "prod/gymbuddy/api-key"
-                key_pair_name = "API_KEY"
-
-                secret_value = get_secret(secret_name, key_pair_name)
-
-                if api_key == secret_value:
-                    return (None, None)        
-                else:
-                    raise AuthenticationFailed("Invalid API Key")
-                
             
             
         except NoCredentialsError:   
