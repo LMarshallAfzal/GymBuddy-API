@@ -1,9 +1,7 @@
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
-import boto3
-import json
+from api.utils import get_secret
 from botocore.exceptions import NoCredentialsError
-from decouple import config
 
 class ApiKeyAuthentication(BaseAuthentication):
     """
@@ -42,8 +40,9 @@ class ApiKeyAuthentication(BaseAuthentication):
         
         try: 
             secret_name = "prod/gymbuddy/api-key"
-            secret_value = self.get_secret(secret_name)
+            key_pair_name = "API_Key"
 
+            secret_value = get_secret(secret_name, key_pair_name)
 
             if api_key == secret_value:
                 return (None, None)
@@ -52,32 +51,3 @@ class ApiKeyAuthentication(BaseAuthentication):
             
         except NoCredentialsError:   
             raise AuthenticationFailed("Unable to authenticate due to missing AWS credentials")
-        
-    def get_secret(self, secret_name):
-        """
-        Retrieve the a key value from AWS Secrets Manager.
-
-        Parameters:
-        - secret_name (str): The name or ARN of the secret containing the secret key/value pair.
-
-        Returns:
-        - str: The key value.
-
-        Raises:
-        - AuthenticationFailed: If an error occurs while retrieving the secret.
-        """
-        client = boto3.client(
-            service_name='secretsmanager',
-            region_name='eu-west-2'
-        )
-
-        try:
-            response =  client.get_secret_value(SecretId=secret_name)
-            secret_value = response['SecretString']
-            secret_dict = json.loads(secret_value)
-            api_key_value = secret_dict.get("API_Key")
-
-            return api_key_value
-        
-        except Exception as e:
-            raise AuthenticationFailed(f"Error retrieving secret from AWS Secrets Manager: {e}")
