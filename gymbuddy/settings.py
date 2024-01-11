@@ -75,27 +75,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gymbuddy.wsgi.application'
 
-# if ENVIRONMENT == 'production':
-#     # Use PostgreSQL for production
-#         DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'gymbuddy-db-1',
-#             'USER': config('DB_USER_PROD'),
-#             'PASSWORD': config('DB_PASSWORD_PROD'),
-#             'HOST': config('DB_HOST_PROD'),
-#             'PORT': config('DB_PORT_PROD', default='5432'),
-#         }
-#     }
+ENVIRONMENT = config('ENVIRONMENT')
 
-# else:
-    # Use SQLite for development
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if ENVIRONMENT == 'production':
+    # Use PostgreSQL for production
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': get_secret('prod/gymbuddy/db-secrets', 'name') or config('DB_NAME'),
+            'USER': get_secret('prod/gymbuddy/db-secrets', 'username') or config('DB_USER'),
+            'PASSWORD': get_secret('prod/gymbuddy/db-secrets', 'password') or config('DB_PASSWORD'),
+            'HOST': get_secret('prod/gymbuddy/db-secrets', 'host') or config('DB_HOST'),
+            'PORT': get_secret('prod/gymbuddy/db-secrets', 'port') or config('DB_PORT', default='5432'),
+        }
     }
-}
+
+else:
+    # Use SQLite for development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
