@@ -28,10 +28,9 @@ SECRET_KEY = get_secret('prod/gymbuddy/django-secrets', 'SECRET_KEY') or config(
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
+ALLOWED_HOSTS = ['3.8.238.97']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
