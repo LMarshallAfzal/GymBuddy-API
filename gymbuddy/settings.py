@@ -30,7 +30,7 @@ SECRET_KEY = get_secret('prod/gymbuddy/django-secrets', 'SECRET_KEY') or config(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['http://3.9.19.207', 'https://3.9.19.207', '3.9.19.207']
+ALLOWED_HOSTS = ['http://3.9.19.207', 'https://3.9.19.207', '3.9.19.207', 'https://ec2-3-9-19-207.eu-west-2.compute.amazonaws.com']
 
 SECURE_SSL_REDIRECT = True
 
