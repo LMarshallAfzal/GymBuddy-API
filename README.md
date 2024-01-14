@@ -14,6 +14,9 @@ The GymBuddy API is a RESTful interface that empowers developers to access and i
 ## Author(s)
 Leonard Marshall Afzal (lmarshallafzal)
 
+## Deployed URI
+You can access GymBuddy API on Postman or any similar service at this URI: https://3.9.19.207/
+
 ## Installation and Setup
 
 1. **Prerequisites:**
